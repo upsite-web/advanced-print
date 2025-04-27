@@ -11,12 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// 1) (Optional) Composer autoload if you ever get it working
+// 1) Load Composer Autoload (only!)
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-use AdvancedPrint\Plugin;
-
-// 3) Bootstrap the plugin
+// 2) Bootstrap main plugin
 \AdvancedPrint\Plugin::instance();
