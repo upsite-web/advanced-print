@@ -16,11 +16,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// 2) Manually load each core class
-require_once __DIR__ . '/includes/class-AP-Plugin.php';
-require_once __DIR__ . '/includes/class-AP-Settings.php';
-require_once __DIR__ . '/includes/class-AP-AdminDesign.php';
-require_once __DIR__ . '/includes/class-AP-Renderer.php';
+use AdvancedPrint\Plugin;
 
 // 3) Bootstrap the plugin
 \AdvancedPrint\Plugin::instance();
