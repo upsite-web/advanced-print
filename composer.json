@@ -1,0 +1,15 @@
+{
+    "name": "advanced-print/advanced-print",
+    "description": "Advanced Print plugin for WooCommerce",
+    "type": "wordpress-plugin",
+    "require": {
+      "php": "^8.2",
+      "mpdf/mpdf": "^8.0"
+    },
+    "autoload": {
+      "psr-4": {
+        "AdvancedPrint\\": "includes/"
+      }
+    }
+  }
+  
