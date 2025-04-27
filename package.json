@@ -1,0 +1,20 @@
+{
+  "name": "advanced-print",
+  "version": "1.0.0",
+  "description": "Advanced Print design editor for WooCommerce",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.3",
+    "@vitejs/plugin-react": "^4.4.1"
+  }
+}

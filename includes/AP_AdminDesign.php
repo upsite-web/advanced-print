@@ -1,34 +1,59 @@
 <?php
 namespace AdvancedPrint;
-defined('ABSPATH') || exit;
 
 class AP_AdminDesign {
-  public static function init() {
-    add_action( 'add_meta_boxes',        [__CLASS__,'add_metabox'] );
-    add_action( 'admin_enqueue_scripts', [__CLASS__,'enqueue_assets'] );
+    public function __construct() {
+        // Add the meta box on add_meta_boxes
+        add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
+        // Enqueue your editor scripts/styles
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+    }
+    public function init() {
+      // if there’s nothing to do at init, you can leave this blank
+      // OR you can move your constructor logic into here
   }
-  public static function add_metabox() {
-    add_meta_box(
-      'ap-design-editor',
-      __( 'Custom Design', 'advanced-print' ),
-      [__CLASS__,'render_metabox'],
-      'product','normal','high'
-    );
-  }
-  public static function render_metabox( $post ) {
-    echo '<div id="ap-design-editor" style="min-height:300px;border:1px solid #ddd;padding:10px;">';
-    echo __( 'Loading design editor…', 'advanced-print' );
-    echo '</div>';
-  }
-  public static function enqueue_assets( $hook ) {
-    if ( ! in_array( $hook, ['post.php','post-new.php'], true ) ) return;
-    wp_enqueue_script( 'ap-admin-js',
-      plugins_url('assets/build/admin.js', __FILE__),
-      ['jquery'], null, true
-    );
-    wp_enqueue_style( 'ap-admin-css',
-      plugins_url('assets/build/admin.css', __FILE__),
-      [], null
-    );
-  }
+    public function add_meta_box() {
+        add_meta_box(
+            'advanced_print_design',
+            __( 'Custom Design', 'advanced-print' ),
+            [ $this, 'render_meta_box' ],
+            'product',
+            'normal',
+            'high'
+        );
+    }
+
+    public function render_meta_box( $post ) {
+        // Use a container that your JS will hook into
+        echo '<div id="advanced-print-editor">Loading design editor…</div>';
+    }
+
+    public function enqueue_assets( $hook_suffix ) {
+        // Only enqueue on the product edit screen
+        if ( $hook_suffix !== 'post.php' && $hook_suffix !== 'post-new.php' ) {
+            return;
+        }
+        if ( get_post_type() !== 'product' ) {
+            return;
+        }
+
+        // Where your built JS lives
+        $asset_url = plugin_dir_url( __DIR__ ) . 'build/editor.js';
+        wp_enqueue_script(
+            'advanced-print-editor',
+            $asset_url,
+            [ 'wp-element', 'wp-data', 'wp-api-fetch' ], // adjust deps if needed
+            filemtime( plugin_dir_path( __DIR__ ) . 'build/editor.js' ),
+            true
+        );
+
+        // Pass REST API nonce + endpoints
+        global $post;
+        wp_localize_script( 'advanced-print-editor', 'APConfig', [
+            'rest_url'  => rest_url( 'advanced-print/v1/' ),
+            'nonce'     => wp_create_nonce( 'wp_rest' ),
+            'post_id'   => $post ? $post->ID : 0, // <-- Add this!
+        ] );
+              
+    }
 }
