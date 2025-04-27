@@ -1,8 +1,8 @@
+import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
 import apiFetch from '@wordpress/api-fetch';
 
-
-export default function Editor() {
+function Editor() {
   const [text, setText] = useState('');
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
@@ -10,9 +10,7 @@ export default function Editor() {
 
   const postId = APConfig.post_id;
 
-
   useEffect(() => {
-    // On load, fetch existing meta
     apiFetch({ path: `/wp/v2/product/${postId}` })
       .then((product) => {
         const meta = product.meta || {};
@@ -93,17 +91,12 @@ export default function Editor() {
         )}
       </div>
     </div>
-
-    
   );
-
-  
 }
 
-import { createRoot } from 'react-dom/client';
-
-
+// Bootstrap the editor
 const container = document.getElementById('advanced-print-editor');
+
 if (container) {
   const root = createRoot(container);
   root.render(<Editor />);
