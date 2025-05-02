@@ -9,18 +9,24 @@ export default defineConfig({
     outDir: '../build',
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        editor: path.resolve(__dirname, 'src/editor.jsx'),
-      },
+      input: path.resolve(__dirname, 'src/main.jsx'),
       output: {
+        format: 'iife',  // <<<<<< THIS IS THE MOST IMPORTANT LINE
         entryFileNames: 'editor.js',
         globals: {
-          '@wordpress/api-fetch': 'wp.apiFetch', // ✅ Tell Vite it's a WordPress global
+          '@wordpress/api-fetch': 'wp.apiFetch',
+          '@wordpress/element': 'wp.element',
+          '@wordpress/data': 'wp.data',
         },
       },
       external: [
-        '@wordpress/api-fetch', // ✅ Don't bundle this
+        '@wordpress/api-fetch',
+        '@wordpress/element',
+        '@wordpress/data',
       ],
+    },
+    commonjsOptions: {
+      transformMixedEsModules: true,
     },
   },
 });

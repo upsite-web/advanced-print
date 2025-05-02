@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Editor from './editor.jsx';
+import { createRoot } from 'react-dom/client';
+import Editor from './editor';
 
-ReactDOM.createRoot(document.getElementById('advanced-print-editor')).render(
-  <React.StrictMode>
-    <Editor />
-  </React.StrictMode>
-);
+const container = document.getElementById('advanced-print-editor');
+
+if (container) {
+  const root = createRoot(container);
+  root.render(<Editor />);
+}
